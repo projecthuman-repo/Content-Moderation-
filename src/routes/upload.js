@@ -6,7 +6,22 @@ const router = express.Router();
 
 router.use(fileUpload())
 
-// Upload image route
+/**
+ * Image Upload Endpoint
+ * 
+ * This endpoint handles the upload of images to the server. It expects a 
+ * `multipart/form-data` request with a single image file, which should have 
+ * the key "file".
+ * 
+ * The endpoint returns one of the following responses:
+ * - 200 OK with the message "success" if the file was successfully received.
+ * - 415 Unsupported Media Type with an error message if the image file is 
+ * not a valid type or exceeds the maximum size limit.
+ * 
+ * @route POST /image
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ */
 router.post("/image", function (req, res) {
     
     // Assume that this request only handles one image for now and that
@@ -31,14 +46,37 @@ router.post("/image", function (req, res) {
         errorMsg = "maximum image size reached"
     }
     
-    if (errorMsg) { res.status(422).send(errorMsg) }
+    // Error 415 Unsupported Media Type
+    if (errorMsg) { res.status(415).send(errorMsg) }
     else {
+        // TODO: send the file to the nightly worker
         res.send("success")
     }
 
 });
 
-// Upload video route
+/**
+ * Route for handling video uploads
+ * 
+ * This route is designed to handle the uploading of video files. It expects a 
+ * `multipart/form-data` request with a single video file, which should have 
+ * the key "file".
+ * 
+ * The endpoint performs two validity checks on the uploaded video file:
+ * 1. Validates the video file's mimetype against a list of accepted types, 
+ * which in this case is just "video/mp4".
+ * 2. Validates the video file's size against the maximum allowed size, which 
+ * is set to 100 MB in this case.
+ * 
+ * The endpoint returns one of the following responses:
+ * - 200 OK with the message "success" if the file was successfully received.
+ * - 415 Unsupported Media Type with an error message if the video file is 
+ * not a valid type or exceeds the maximum size limit.
+ * 
+ * @route POST /video
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ */
 router.post("/video", function (req, res) {
        
     // Assume that this request only handles one image for now and that
@@ -62,7 +100,7 @@ router.post("/video", function (req, res) {
         errorMsg = "maximum video size reached"
     }
     
-    if (errorMsg) { res.status(422).send(errorMsg) }
+    if (errorMsg) { res.status(415).send(errorMsg) }
     else {
         res.send("success")
     }
