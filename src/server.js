@@ -1,9 +1,8 @@
 const express = require('express');
 const app = express();
 
+const uploadRouter = require('./routes/upload')
+app.use("/upload", uploadRouter)
 
-app.get('/', function (req, res) {
-    return res.send('PHC Content Moderation');
-   });
    
-   app.listen(process.env.PORT || 8080);
+app.listen(process.env.PORT || 8080);
