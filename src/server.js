@@ -5,7 +5,7 @@ const reportRouter = require('./routes/report');
 const dotenv = require('dotenv');
 dotenv.config();
 
-// Make s
+// Make sure to put this .env outside src
 const uri = process.env.ATLAS_URI || "empty";
 
 mongoose
