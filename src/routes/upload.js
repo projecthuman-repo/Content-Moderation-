@@ -1,11 +1,13 @@
 // upload.js - uploading files route module.
-
 const express = require("express");
 const fileUpload = require("express-fileupload")
 const router = express.Router();
 var profanity = require('profanity-util');
 
+
+
 router.use(fileUpload())
+
 
 router.post("/text", function (req, res) {
     const text = req.body.text
@@ -60,6 +62,13 @@ router.post("/image", function (req, res) {
 
 });
 
+
+router.get("/test", async (req, res) => {
+    // let collection = await db.collection("test");
+    // let results = await collection.find({})
+
+    console.log(db)
+})
 
 router.post("/video", function (req, res) {
        
