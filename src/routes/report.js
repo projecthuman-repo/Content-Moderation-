@@ -17,7 +17,7 @@ router.post("/upload", async(req, res) => {
     
     const requestDetails = new RequestDetails({
         id: req.body.requestDetails.id,
-        applicationName: req.body.requestDetails.id.application
+        applicationName: req.body.requestDetails.application
     })
 
     const reporters = new Reporters({
@@ -29,7 +29,6 @@ router.post("/upload", async(req, res) => {
     })
 
     const reportedContent = new ReportedContent({
-        // type: req.body.reportedContent.type,
         description: req.body.reportedContent.description,
         properties: {
             type: req.body.reportedContent.properties.type,
@@ -39,13 +38,6 @@ router.post("/upload", async(req, res) => {
         }
     })
 
-    console.log({description: req.body.reportedContent.description,
-        properties: {
-            type: req.body.reportedContent.properties.type,
-            id: req.body.reportedContent.properties.id,
-            collectionName: req.body.reportedContent.properties.collectionName,
-            contentURL: req.body.reportedContent.properties.contentURL
-        }})
     const reportedUser = new ReportedUser({
         id: req.body.reportedUser.id,
         name: req.body.reportedUser.name,
@@ -62,7 +54,7 @@ router.post("/upload", async(req, res) => {
     })
 
     // save to db
-    // await report.save()
+    await report.save()
 
     // following payload currently has placeholders right now
     const payload = {
@@ -75,7 +67,7 @@ router.post("/upload", async(req, res) => {
         }
       }
 
-    res.send(report)
+    res.send(payload)
 })
 
 // Grabs the list of all the reports
