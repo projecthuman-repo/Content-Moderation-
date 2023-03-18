@@ -3,8 +3,9 @@ const mongoose = require("mongoose")
 
 const schema = mongoose.Schema({
     id: String,
-    applicationName: String
+    name: String,
+    description: String
 })
 
 exports.schema = schema
-exports.model = mongoose.model("RequestDetails", schema)
+exports.model = mongoose.model("ReportedUser", schema)

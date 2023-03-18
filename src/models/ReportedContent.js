@@ -2,10 +2,14 @@
 const mongoose = require("mongoose")
 
 const schema = mongoose.Schema({
-    type: String,
-    id: String,
-    collectionName: String,
-    contentURL: String
+    description: String,
+    properties: {
+        type: String,
+        id: String,
+        collectionName: String,
+        contentURL: String
+    }
 })
 
-module.exports = mongoose.model("ReportedContent", schema)
+exports.schema = schema
+exports.model = mongoose.model("ReportedContent", schema)
