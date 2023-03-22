@@ -11,7 +11,8 @@ const ReportedUser = require("../models/ReportedUser").model;
 
 const { v4: uuidv4 } = require('uuid');
 
-// Uploads a new report
+// Uploads a new report.
+// To be used by Client-Facing API
 router.post("/upload", async(req, res) => {
     const documentID = uuidv4()
     
@@ -53,10 +54,10 @@ router.post("/upload", async(req, res) => {
         reason: req.body.reason
     })
 
-    // save to db
+    // Save to db
     await report.save()
 
-    // following payload currently has placeholders right now
+    // Following payload currently has placeholders right now
     const payload = {
         documentId: documentID,
         contentUrl: "s3.aws.com/us-east/<Content-URL>",
@@ -68,6 +69,18 @@ router.post("/upload", async(req, res) => {
       }
 
     res.send(payload)
+})
+
+// Called by the Worker API to send outcome of report
+// Used by Worker API
+router.post("/result", async(req, res) => {
+    const documentId = req.body.documentId
+    const outcome = req.body.outcome
+
+    res.send({
+        documentId: documentId,
+        outcome: outcome
+    })
 })
 
 // Grabs the list of all the reports
