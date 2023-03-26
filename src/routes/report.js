@@ -56,7 +56,7 @@ router.post("/upload", async(req, res) => {
     })
 
     // Save to db
-    //await report.save()
+    await report.save()
 
     // Following payload currently has placeholders right now
     const payload = {
@@ -69,37 +69,34 @@ router.post("/upload", async(req, res) => {
         }
       }
 
-    var urlparams = http.request({
-        host: 'localhost',
+    var urlparams = {
+        host: '127.0.0.1',
         port: 8000,
         path: '/moderate',
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         }
-    })
+    }
 
+    // Convert payload to json and send to worker using SendRequest method
     const payloadJSON = JSON.stringify(payload);
+    
     SendRequest(payloadJSON, urlparams);
-    // res.send(payload)
+
+    res.send("success")
 })
 
 function SendRequest(datatosend, urlparams) {
-    function OnResponse(response) {
-        var data = '';
 
-        response.on('data', function(chunk) {
-            data += chunk; //Append each chunk of data received to this variable.
-        });
-        response.on('end', function() {
-            console.log(data); //Display the server's response, if any.
-        });
-    }
+    //Create a request object.
+    var request = http.request(urlparams);
 
-    var request = http.request(urlparams, OnResponse); //Create a request object.
+    //Send off the request.
+    request.write(datatosend); 
 
-    request.write(datatosend); //Send off the request.
-    request.end(); //End the request.
+    //End the request.
+    request.end(); 
 }
 
 // Called by the Worker API to send outcome of report
