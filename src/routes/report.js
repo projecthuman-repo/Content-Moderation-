@@ -64,7 +64,7 @@ router.post("/upload", async(req, res) => {
         contentDetails: {
           contentType: "placeholder",
           contentLength: "placeholder",
-          timestamp: new Date()
+          timestamp: new Date().valueOf()
         }
       }
 
