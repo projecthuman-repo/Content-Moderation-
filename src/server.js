@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require("mongoose");
-const uploadRouter = require('./routes/upload');
+const uploadRouter = require('./routes/text');
 const reportRouter = require('./routes/report');
 const dotenv = require('dotenv');
 dotenv.config();
@@ -13,7 +13,7 @@ mongoose
 .then(() => {
     const app = express()
     app.use(express.json()) // new
-    app.use("/upload", uploadRouter)
+    app.use("/text", uploadRouter)
     app.use("/report", reportRouter)
 		
 

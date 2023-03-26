@@ -9,7 +9,7 @@ var profanity = require('profanity-util');
 router.use(fileUpload())
 
 
-router.post("/text", function (req, res) {
+router.post("/report", function (req, res) {
     const text = req.body.text
     
     // Uses profanity-util to detect profane language. check() method returns all the profane languages detected
