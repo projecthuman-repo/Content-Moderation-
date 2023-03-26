@@ -1,6 +1,7 @@
 // Router for report model
 const express = require("express");
 const router = express.Router();
+const http = require('http')
 
 const Report = require("../models/Report").model;
 const RequestDetails = require("../models/RequestDetails").model;
@@ -55,7 +56,7 @@ router.post("/upload", async(req, res) => {
     })
 
     // Save to db
-    await report.save()
+    //await report.save()
 
     // Following payload currently has placeholders right now
     const payload = {
@@ -68,14 +69,46 @@ router.post("/upload", async(req, res) => {
         }
       }
 
-    res.send(payload)
+    var urlparams = http.request({
+        host: 'localhost',
+        port: 8000,
+        path: '/moderate',
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+
+    const payloadJSON = JSON.stringify(payload);
+    SendRequest(payloadJSON, urlparams);
+    // res.send(payload)
 })
+
+function SendRequest(datatosend, urlparams) {
+    function OnResponse(response) {
+        var data = '';
+
+        response.on('data', function(chunk) {
+            data += chunk; //Append each chunk of data received to this variable.
+        });
+        response.on('end', function() {
+            console.log(data); //Display the server's response, if any.
+        });
+    }
+
+    var request = http.request(urlparams, OnResponse); //Create a request object.
+
+    request.write(datatosend); //Send off the request.
+    request.end(); //End the request.
+}
 
 // Called by the Worker API to send outcome of report
 // Used by Worker API
 router.post("/result", async(req, res) => {
     const documentId = req.body.documentId
     const outcome = req.body.outcome
+
+    
 
     res.send({
         documentId: documentId,
