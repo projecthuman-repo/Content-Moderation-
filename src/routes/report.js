@@ -64,7 +64,7 @@ router.post("/upload", async(req, res) => {
 
     // Following payload currently has placeholders right now
     const payload = {
-        documentId: documentID,
+        documentID: documentID,
         contentUrl: "s3.aws.com/us-east/<Content-URL>",
         contentDetails: {
           contentType: "placeholder",
@@ -86,6 +86,8 @@ router.post("/upload", async(req, res) => {
 
     // Convert payload to json and send to worker using SendRequest method
     const payloadJSON = JSON.stringify(payload);
+    
+    console.log(payloadJSON) // For debugging purposes
     
     SendRequest(payloadJSON, urlparams);
 
