@@ -12,8 +12,12 @@ const ReportedUser = require("../models/ReportedUser").model;
 
 const { v4: uuidv4 } = require('uuid');
 
-// Uploads a new report.
-// To be used by Client-Facing API
+/* This endpoint allows the client to upload a new report to the server using an HTTP POST request. 
+The endpoint receives a JSON object with various properties such as requestDetails, reporters, etc..
+It generates a new documentID using uuidv4 and creates new objects for each of the above-mentioned properties. 
+The report is then saved to a database, and a payload containing the documentID and some placeholders is created. 
+This payload is then sent to a worker API using the SendRequest method. 
+Finally, a success message is sent back to the client. */
 router.post("/upload", async(req, res) => {
     const documentID = uuidv4()
     
@@ -69,6 +73,7 @@ router.post("/upload", async(req, res) => {
         }
       }
 
+    // urlparams for worker api
     var urlparams = {
         host: '127.0.0.1',
         port: 8000,
@@ -104,8 +109,6 @@ function SendRequest(datatosend, urlparams) {
 router.post("/result", async(req, res) => {
     const documentId = req.body.documentId
     const outcome = req.body.outcome
-
-    
 
     res.send({
         documentId: documentId,
