@@ -1,9 +1,24 @@
 const express = require('express');
-const app = express();
+const mongoose = require("mongoose");
+const textRouter = require('./routes/text');
+const reportRouter = require('./routes/report');
+const dotenv = require('dotenv');
+dotenv.config();
 
+// Make sure to put this .env outside src
+const uri = process.env.ATLAS_URI || "empty";
 
-app.get('/', function (req, res) {
-    return res.send('PHC Content Moderation');
-   });
-   
-   app.listen(process.env.PORT || 8080);
+mongoose
+.connect(uri, { dbName: "contentmoderation" })
+.then(() => {
+    const app = express()
+    app.use(express.json()) // new
+    app.use("/text", textRouter)
+    app.use("/report", reportRouter)
+		
+
+        app.listen(process.env.PORT || 8080, () => {
+            console.log("Connected to mongodb")
+        });
+		
+	})
