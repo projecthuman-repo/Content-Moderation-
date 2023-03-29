@@ -1,5 +1,5 @@
 # Content Moderation REST API
-This is a **REST API** built with **Node JS** and **Express** part of the **Content Moderation** system for P:HC.
+This is a **REST API** built with **Node JS** and **Express** part of the **Content Moderation** system for P:HC platforms.
 <br>
 
 Currently, the entire system itself is unfinished. This REST API however, is 90% complete. All it needs is implementing further actions after the system has outputted a result.
@@ -11,8 +11,9 @@ It takes in a request body based on the schema designed (refer to documentation)
 
 ## Architecture:
 <br>
-<img width="810" alt="system architecture" src="https://user-images.githubusercontent.com/78581216/228678822-40fca601-417c-4372-b712-9c4df728dd5a.png">
-<br>
+<img width="745" alt="system architecture FINAL" src="https://user-images.githubusercontent.com/78581216/228682882-954129f6-b03e-4b2a-885f-6b7a0ddd4391.png">
+
+
 It connects to a **MongoDB** atlas database which you can access with your p:hc dev account. This API requires the URI to be declared in a .env file. 
 
 Create a .env file in the root folder and name the variable ATLAS_URI
