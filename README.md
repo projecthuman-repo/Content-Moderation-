@@ -38,3 +38,17 @@ npm run dev
 - server.js contains express app initialization and connection to database.
 - /models folder contains the entities from the schema exported in **Mongoose**.
 - /routes folder contains the endpoint implementation for text and image/video.
+
+## API Documentation
+### Request
+| Request | Type | Description |
+| :--- | :--- | :--- |
+| `/report/upload` | `POST` | upload a new report of a video/image to the server |
+| `/report/result` | `POST` | called by the Worker API to send outcome of report |
+| `/report/reports` | `GET` | grabs the list of all the reports |
+| `/text/report` | `POST` | check for profanity in a text |
+
+### Helper functions 
+| Name | Params | Description | Return |
+| :--- | :--- | :--- | :--- |
+| `SendRequest` | `datatosend {string}, urlparams {obj}` | Send a request to a URL with specified data. | N/A |
