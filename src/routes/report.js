@@ -94,6 +94,12 @@ router.post("/upload", async(req, res) => {
     res.send("success")
 })
 
+/**
+ * Send a request to a URL with specified data.
+ *
+ * @param {string} datatosend - The data to send in the request body.
+ * @param {Object} urlparams - The URL parameters to include in the request.
+ */
 function SendRequest(datatosend, urlparams) {
 
     //Create a request object.
