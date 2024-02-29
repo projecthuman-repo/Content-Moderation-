@@ -3,7 +3,7 @@ const axios = require('axios');
 const sendPostRequest = async () => {
   try {
     const response = await axios.post('http://localhost:8080/report/result', {
-      documentId: '12345',
+      documentId: '123456',
       outcome: 'reviewed',
     });
     console.log('Response:', response.data);

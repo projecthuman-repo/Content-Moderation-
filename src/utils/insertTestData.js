@@ -10,7 +10,7 @@ mongoose.connect(process.env.ATLAS_URI, { useNewUrlParser: true, useUnifiedTopol
   const insertTestData = async () => {
     try {
       const minimalData = {
-        documentID: "12345",
+        documentID: "123456",
         requestDetails: {},
         reportedContent: {},
         reportedUser: {},

@@ -9,6 +9,7 @@ const Reporters = require("../models/Reporters").model;
 const Reporter = require("../models/Reporter").model;
 const ReportedContent = require("../models/ReportedContent").model;
 const ReportedUser = require("../models/ReportedUser").model;
+const Content = require('../models/Content'); // Adjust the path as necessary
 
 const { v4: uuidv4 } = require('uuid');
 
@@ -112,29 +113,58 @@ function SendRequest(datatosend, urlparams) {
     request.end(); 
 }
 
+// Placeholder for future content action implementation
+async function handleContentAction(report) {
+    // Simulate action based on report.actionRequired
+    switch (report.actionRequired) {
+        case 'remove':
+            console.log(`Content ${report.reportedContent.contentId} would be removed.`);
+            // Here you will eventually add logic to remove the content
+            break;
+        case 'review':
+            console.log(`Content ${report.reportedContent.contentId} marked for review.`);
+            // Here you will eventually add logic to mark the content for review
+            break;
+        default:
+            console.log(`No action required for content ${report.reportedContent.contentId}.`);
+    }
+}
+
 // Called by the Worker API to send outcome of report
 // Used by Worker API
 router.post("/result", async (req, res) => {
-    const { documentId, outcome } = req.body;
-
-    try {
-        const report = await Report.findOne({ documentID: documentId });
-        if (!report) {
-            return res.status(404).send({ message: "Report not found." });
-        }
-        report.moderationOutcome = outcome;
-        report.status = 'reviewed';
-
+    // Existing logic to find and update the report...
+    const report = await Report.findOne({ documentID: req.body.documentId });
+    if (report) {
+        report.moderationOutcome = req.body.outcome;
+        // Update actionRequired based on outcome...
+        
         await report.save();
 
-        // Here, add additional logic such as notifying users or taking action based on the outcome
+        // Handle the content action
+        await handleContentAction(report);
 
-        res.send({ message: "Report updated successfully with moderation result." });
-    } catch (error) {
-        console.error("Failed to update report with moderation result:", error);
-        res.status(500).send({ message: "Internal server error" });
+        res.send({ message: "Report updated successfully with moderation result and action logged." });
+    } else {
+        res.status(404).send({ message: "Report not found." });
     }
 });
+
+router.post('/content', async (req, res) => {
+    try {
+      const { title, body, author } = req.body;
+      const newContent = await Content.create({
+        title,
+        body,
+        author, // This should be the ObjectId of the author from your User model
+      });
+  
+      res.status(201).json(newContent);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Server error');
+    }
+  });
 
 // Grabs the list of all the reports
 router.get("/reports", async(req, res) => {

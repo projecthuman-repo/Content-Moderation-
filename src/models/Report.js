@@ -19,9 +19,13 @@ const schema = mongoose.Schema({
     },
     status: {
         type: String,
-        default: 'pending',
+        default: 'pending', // Indicates the initial status of the report
+    },
+    actionRequired: {
+        type: String,
+        enum: ['none', 'review', 'remove'], // Specifies allowed actions
+        default: 'none' // No action required by default
     }
 });
 
-exports.schema = schema;
 module.exports = mongoose.model("Report", schema);
