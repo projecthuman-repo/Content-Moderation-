@@ -9,7 +9,7 @@ dotenv.config();
 const uri = process.env.ATLAS_URI || "empty";
 
 mongoose
-.connect(uri, { dbName: "contentmoderation" })
+.connect(uri, { dbName: "contentModeration" })
 .then(() => {
     const app = express()
     app.use(express.json()) // new

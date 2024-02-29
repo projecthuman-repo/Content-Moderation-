@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 const http = require('http')
 
-const Report = require("../models/Report").model;
+const Report = require('../models/Report');
 const RequestDetails = require("../models/RequestDetails").model;
 const Reporters = require("../models/Reporters").model;
 const Reporter = require("../models/Reporter").model;
@@ -114,15 +114,27 @@ function SendRequest(datatosend, urlparams) {
 
 // Called by the Worker API to send outcome of report
 // Used by Worker API
-router.post("/result", async(req, res) => {
-    const documentId = req.body.documentId
-    const outcome = req.body.outcome
+router.post("/result", async (req, res) => {
+    const { documentId, outcome } = req.body;
 
-    res.send({
-        documentId: documentId,
-        outcome: outcome
-    })
-})
+    try {
+        const report = await Report.findOne({ documentID: documentId });
+        if (!report) {
+            return res.status(404).send({ message: "Report not found." });
+        }
+        report.moderationOutcome = outcome;
+        report.status = 'reviewed';
+
+        await report.save();
+
+        // Here, add additional logic such as notifying users or taking action based on the outcome
+
+        res.send({ message: "Report updated successfully with moderation result." });
+    } catch (error) {
+        console.error("Failed to update report with moderation result:", error);
+        res.status(500).send({ message: "Internal server error" });
+    }
+});
 
 // Grabs the list of all the reports
 router.get("/reports", async(req, res) => {
